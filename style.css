@@ -5,6 +5,7 @@ body {
 }
 
 .board {
+    margin-bottom: 25px;
     max-width: 420px;
     width: 100%;
     aspect-ratio: 1/1;
@@ -21,4 +22,9 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.name-inputs {
+    display: flex;
+    gap: 50%;
 }
