@@ -3,13 +3,9 @@ const game = (() => {
 
     const createPlayer = (playerName, playerSymbol) => {
         let name = playerName;
-
         const symbol = playerSymbol;
 
-        const getName = () => name;
-        const setName = (newName) => name = newName;
-
-        return {getName, setName, symbol};
+        return {name, symbol};
     }
 
     const player1 = createPlayer("Player 1", "O");
@@ -17,29 +13,32 @@ const game = (() => {
 
     let currentPlayer = player1;
     let winner = undefined;
+    let gameState = "playing";
 
     const addNextMark = (position) => {
-        if(winner || board[position])
+        if(gameState !== "playing" || board[position])
             return;
 
         board[position] = currentPlayer;
 
         currentPlayer = currentPlayer === player1 ? player2 : player1;
 
-        checkWinner();
+        checkEnd();
     }
 
-    const checkWinner = () => {
+    const checkEnd = () => {
         const cellGroups = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
-
-        console.log("Checking winner")
 
         const winGroup = cellGroups.find(cellGroup => board[cellGroup[0]] && board[cellGroup[0]] === board[cellGroup[1]] && board[cellGroup[1]] === board[cellGroup[2]])
 
-        console.log(winGroup);
-
-        if(winGroup)
+        if(winGroup) {
             winner = board[winGroup[0]];
+            gameState = "ended";
+            return;
+        }
+
+        if(board.length >= 9 && !board.includes(undefined))
+            gameState = "ended";
     }
 
     return {board, player1, player2, currentPlayer, addNextMark, winner};
